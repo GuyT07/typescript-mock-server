@@ -1,10 +1,26 @@
 import express = require('express');
 import fs = require('fs');
 
+const argv = (() => {
+    const args = {};
+    process.argv.slice(2).map( (element) => {
+        const matches = element.match( '--([a-zA-Z0-9]+)=(.*)');
+        if ( matches ){
+            // @ts-ignore
+            args[matches[1]] = matches[2]
+                .replace(/^['"]/, '').replace(/['"]$/, '');
+        }
+    });
+    return args;
+})();
+
+console.log(argv);
+
 // Create a new express app instance
 const app: express.Application = express();
 
-const basePath = './tms-models';
+// @ts-ignore
+const basePath = argv['path'];
 
 async function print(path: string) {
     const dir = await fs.promises.opendir(path);
