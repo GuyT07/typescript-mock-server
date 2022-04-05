@@ -1,5 +1,11 @@
-import express = require('express');
-import fs = require('fs');
+#!./../node_modules/.bin/ts-node-dev
+
+import express from 'express';
+import { Express } from 'express';
+import * as fs from 'fs';
+
+const baseDirPath = process.cwd()
+console.log(baseDirPath);
 
 const argv = (() => {
     const args = {};
@@ -17,12 +23,18 @@ const argv = (() => {
 console.log(argv);
 
 // Create a new express app instance
-const app: express.Application = express();
+const app: Express = express();
 
 // @ts-ignore
-const basePath = argv['path'];
+const args = argv['path'];
+
+// @ts-ignore
+const basePath = `${baseDirPath}/${args}`;
+
+console.log('basePath:' + basePath);
 
 async function print(path: string) {
+    console.log(path);
     const dir = await fs.promises.opendir(path);
     for await (const dirent of dir) {
         if (dirent.isDirectory()) {
@@ -60,7 +72,9 @@ function handleGetRequest(path: string, dirent: fs.Dirent) {
     console.log('Adding GET request');
     const endpoint = convertFileNameToEndpoint(path, dirent);
     console.log('Endpoint: ' + endpoint);
-    loadModule(`../${path}/${dirent.name}`)
+    const modulePath = `${path}/${dirent.name}`;
+    console.log('Resolve module: ' + modulePath);
+    loadModule(modulePath)
         .then(model => addEndpoint(endpoint, model))
         .catch(err => console.error(err));
 }
