@@ -5,16 +5,15 @@ have to update your mock, otherwise you will receive compile errors.
 
 # Quickstart
 The easiest way to check out this stub/mock server is by installing it as a (dev)dependency and then 
-add a script to you scripts section: `cd node_modules/typescript-mock-server && npm run start -- --path=../../path-to-your-model-directory`. 
-Please note we are changing the directory and therefore, to set the path parameter, you need to go 2 levels up to be in your root. 
-I am looking for a cleaner way of doing this. Your models should export a data const and your file should be named as `^(get|post){1}(-\d)?.ts$`. 
+add a script to you scripts section: `npm run --prefix node_modules/typescript-mock-server start -- --path=$(pwd)/tms-models`. 
+Your models should export a data const and your file should be named as `^(get|post){1}(-\d)?.ts$`. 
 Changes are being picked up automatically, so no need for a restart.
 
 Check out the [working example project](https://github.com/GuyT07/typescript-mock-server-examle) and source [the examples](https://github.com/GuyT07/typescript-mock-server/tree/main/tms-models/users).
 
 # Options
-`--port=x`: Port number the server runs on
-`--path=x`: Path to your models
+- `--port=x`: Port number the server runs on
+- `--path=x`: Path to your models
 
 ## Adding GET mocks/stubs
 Examples talk, so lets start with an example.
@@ -70,7 +69,7 @@ Following dependencies are being used:
 
 ## Roadmap
 - [x] Support other server port
-- [ ] Improve paths/way to start
+- [x] Improve paths/way to start
 - [ ] Support different headers
 - [ ] Support all HTTP methods
 

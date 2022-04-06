@@ -3,9 +3,6 @@
 import express, { Express } from 'express';
 import * as fs from 'fs';
 
-const baseDirPath = process.cwd();
-console.log(baseDirPath);
-
 const argv: { [key: string]: string } = (() => {
   const args = {};
   process.argv.slice(2).map((element) => {
@@ -26,8 +23,7 @@ const app: Express = express();
 
 const {path, port} = argv;
 
-// @ts-ignore
-const basePath = `${baseDirPath}/${path}`;
+const basePath = `${path}`;
 
 console.log('basePath:' + basePath);
 

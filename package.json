@@ -4,7 +4,7 @@
   "description": "Simple mock server that can be used in front end development. Instead of creating json files you can just publish TypeScript objects as json",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "example": "ts-node-dev src/index.ts --path=tms-models --port=5000",
+    "example": "ts-node-dev src/index.ts --path=$(pwd)/tms-models --port=5000",
     "start": "ts-node-dev src/index.ts"
   },
   "repository": {
@@ -12,12 +12,15 @@
     "url": "git+https://github.com/GuyT07/typescript-mock-server.git"
   },
   "keywords": ["mock server", "testing", "stub", "typescript"],
-  "author": "",
+  "author": "Guy Theuws",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/GuyT07/typescript-mock-server/issues"
   },
   "homepage": "https://github.com/GuyT07/typescript-mock-server#readme",
+  "funding": {
+    "url" : "https://genydev.nl"
+  },
   "devDependencies": {
     "prettier": "^2.6.2"
   },
