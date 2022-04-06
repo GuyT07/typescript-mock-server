@@ -15,14 +15,16 @@ Check out the [working example project](https://github.com/GuyT07/typescript-moc
 - `--port=x`: Port number the server runs on
 - `--path=x`: Path to your models
 
-## Adding GET mocks/stubs
+## Register mocks/stubs
 Examples talk, so lets start with an example.
 
-Your requirement is to have the following endpoints `/users`, `/users/1` and `/users/profile/1`
+Your requirement is to have the following GET endpoints `/users`, `/users/1` and `/users/profile/1`
 
 Create a root folder that contains your models, like `models`. Then add a folder `users` and within the newly created folder 
-create a new folder `profile`. Add following files `get.ts` and `get-1.ts` in the `users` directory, `get-1.ts` in the `profile` dir. You should 
-have the following structure:
+create a new folder `profile`. Add following files `get.ts` and `get-1.ts` in the `users` directory, `get-1.ts` in the `profile` dir. 
+To register another HTTP verb, you replace `get` with your verb ('get', 'post', 'put', 'delete', 'patch', 'options' and 'head' are currently supported).
+
+You should have the following structure:
 
 ```
 --models
@@ -70,6 +72,11 @@ Following dependencies are being used:
 ## Roadmap
 - [x] Support other server port
 - [x] Improve paths/way to start
-- [ ] Support different headers
-- [ ] Support all HTTP methods
+- [ ] Support different headers/configurations (delays, status codes, ...)
+- [x] Support all HTTP methods
+- [ ] Add tests
+- [ ] Refactor, split up in separate classes (first check if people actually want to use the tool)
+- [ ] Setup CI/CD (+code quality + coverage tooling)
+- [ ] Setup website
+- [ ] Create a JVM compatible version
 
