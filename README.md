@@ -9,7 +9,7 @@ add a script to you scripts section: `npm run --prefix node_modules/typescript-m
 Your models should export a data const and your file should be named as `^(get|post){1}(-\d)?.ts$`. 
 Changes are being picked up automatically, so no need for a restart.
 
-Check out the [working example project](https://github.com/GuyT07/typescript-mock-server-examle) and source [the examples](https://github.com/GuyT07/typescript-mock-server/tree/main/tms-models/users).
+Check out the [working example project](https://github.com/GuyT07/typescript-mock-server-examle) and [the source](https://github.com/GuyT07/typescript-mock-server/tree/main/tms-models/users).
 
 # Options
 - `--port=x`: Port number the server runs on
