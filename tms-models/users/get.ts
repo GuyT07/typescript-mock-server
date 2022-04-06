@@ -5,7 +5,7 @@ export interface User {
     creationDate:  Date;
 }
 
-const newDate = () => new Date();
+export const newDate = () => new Date();
 
 export const data: User[] = [{
     id: 1,

@@ -1,4 +1,4 @@
-import { User } from '../get';
+import { newDate, User } from '../get';
 
 interface Profile {
     id: number;
@@ -10,6 +10,7 @@ export const data: Profile = {
     id: 1, title: 'Hello profile', user: {
         id: 1,
         firstName: 'Guy',
-        lastName: 'Theuws'
+        lastName: 'Theuws',
+        creationDate: newDate()
     }
 };

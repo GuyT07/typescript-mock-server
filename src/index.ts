@@ -1,4 +1,4 @@
-#!./../node_modules/.bin/ts-node-dev
+#!./node_modules/.bin/ts-node-dev
 
 import express, { Express } from 'express';
 import * as fs from 'fs';
@@ -6,7 +6,7 @@ import * as fs from 'fs';
 const baseDirPath = process.cwd();
 console.log(baseDirPath);
 
-const argv = (() => {
+const argv: { [key: string]: string } = (() => {
   const args = {};
   process.argv.slice(2).map((element) => {
     const matches = element.match('--([a-zA-Z0-9]+)=(.*)');
@@ -24,11 +24,10 @@ console.log(argv);
 // Create a new express app instance
 const app: Express = express();
 
-// @ts-ignore
-const args = argv['path'];
+const {path, port} = argv;
 
 // @ts-ignore
-const basePath = `${baseDirPath}/${args}`;
+const basePath = `${baseDirPath}/${path}`;
 
 console.log('basePath:' + basePath);
 
@@ -50,8 +49,8 @@ async function loadModule(moduleName: string) {
   return await import(moduleName);
 }
 
-app.listen(3000, function() {
-  console.log('App is listening on port 3000!');
+app.listen(port || 3000, function() {
+  console.log(`App is listening on port ${port || 3000}!`);
 });
 
 function handleFile(path: string, dirent: fs.Dirent) {

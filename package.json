@@ -1,10 +1,10 @@
 {
   "name": "typescript-mock-server",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Simple mock server that can be used in front end development. Instead of creating json files you can just publish TypeScript objects as json",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "example": "ts-node-dev src/index.ts --path=tms-models",
+    "example": "ts-node-dev src/index.ts --path=tms-models --port=5000",
     "start": "ts-node-dev src/index.ts"
   },
   "repository": {
