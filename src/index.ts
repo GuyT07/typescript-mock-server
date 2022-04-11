@@ -25,7 +25,7 @@ const app: Express = express();
 
 const { path, port } = argv;
 
-const basePath = `${path}`;
+const basePath = `${process.cwd()}/${path}`;
 
 interface RegisteredEndpoint {
   httpVerb: string;
