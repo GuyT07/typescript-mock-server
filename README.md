@@ -5,9 +5,9 @@ have to update your mock, otherwise you will receive compile errors.
 
 # Quickstart
 The easiest way to check out this stub/mock server is by installing it as a (dev)dependency and then 
-add a script to you scripts section: `npm run --prefix node_modules/typescript-mock-server start -- --path=$(pwd)/tms-models`. 
+add a script to you scripts section: `npm run --prefix node_modules/typescript-mock-server start -- --path=/tms-models`. 
 Your models should export a data const and your file should be named as `^(get|post){1}(-\d)?.ts$`. 
-Changes are being picked up automatically, so no need for a restart.
+Changes are being picked up automatically, so no need for a restart. When you add files, you have to restart.
 
 Check out the [working example project](https://github.com/GuyT07/typescript-mock-server-examle) and [the source](https://github.com/GuyT07/typescript-mock-server/tree/main/tms-models/users).
 
@@ -73,10 +73,21 @@ Following dependencies are being used:
 - [x] Support other server port
 - [x] Improve paths/way to start
 - [ ] Support different headers/configurations (delays, status codes, ...)
-- [x] Support all HTTP methods
+- [x] Support most used HTTP methods
 - [ ] Add tests
 - [ ] Refactor, split up in separate classes (first check if people actually want to use the tool)
 - [ ] Setup CI/CD (+code quality + coverage tooling)
 - [ ] Setup website
 - [ ] Create a JVM compatible version
+- [ ] Create interface to force implementation of required properties and make it more stable
+- [ ] Improve error handling (missing properties etc.)
+- [ ] Create an optional persistent state
+
+
+## Release notes (will be moved to GitHub in the future)
+- v0.0.11 - Add items to roadmap, bug fixes
+- v0.0.10 - Support multiple http verbs
+
+## Bug fix contributors
+- Path fix, from now on current working directory is used. Credits to [Spoodyman](https://github.com/spoodyman)
 
