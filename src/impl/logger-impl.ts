@@ -6,7 +6,7 @@ export class LoggerImpl implements LoggerInterface {
   private readonly log: Logger;
 
   constructor() {
-    this.log = new Logger({ignoreStackLevels: 4});
+    this.log = new Logger({ignoreStackLevels: 4, displayFunctionName: false});
   }
 
   private static getArgumentsToPass(args: unknown[]): unknown | unknown[] {
