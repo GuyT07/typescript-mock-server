@@ -1,3 +1,5 @@
+import { Config } from '../../src/models/config';
+
 export interface User {
     id: number;
     firstName: string;
@@ -18,3 +20,10 @@ export const data: User[] = [{
     lastName: 'Development',
     creationDate:  newDate()
 }];
+
+export const config: Config = {
+    server: {
+        delay: 2000,
+        statusCode: 418
+    }
+}

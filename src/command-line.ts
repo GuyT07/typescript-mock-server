@@ -1,6 +1,5 @@
 export interface CommandLine {
   getCommands(): Map<Command, string>;
-
   getCommand(command: Command): string | undefined;
 }
 

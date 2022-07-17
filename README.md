@@ -58,6 +58,13 @@ export const data: User[] = [{
     lastName: 'Development',
     creationDate:  newDate()
 }];
+
+export const config: Config = {
+    server: {
+        delay: 2000,
+        statusCode: 418
+    }
+}
 ```
 
 ## Dependencies

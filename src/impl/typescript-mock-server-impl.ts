@@ -53,7 +53,16 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
   }
 
   private addEndpoint(endpoint: string, httpVerb: HttpVerb, model: any) {
-    this.app[httpVerb](endpoint, (req, res) => res.send(model.data));
+    this.app[httpVerb](endpoint, (req, res) => {
+      if (model?.config?.server?.statusCode) {
+        res.statusCode = model?.config?.server?.statusCode;
+      }
+      if (model?.config?.server?.delay) {
+        setTimeout(() => res.send(model.data), model?.config?.server?.delay);
+      } else {
+        return res.send(model.data);
+      }
+    });
   }
 
   private handleRequest(path: string, dirent: Dirent, httpVerb: HttpVerb) {
