@@ -8,7 +8,7 @@
     "start": "ts-node-dev src/index.ts",
     "update-deps": "npm update",
     "get-version": "echo $npm_package_version",
-    "publish-to-npm": "git tag -a ${npm_package_version} -m \"v${npm_package_version}\" && npm publish"
+    "publish-to-npm": "git tag -a ${npm_package_version} -m \"v${npm_package_version}\" && git push && npm publish"
   },
   "repository": {
     "type": "git",
