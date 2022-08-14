@@ -8,6 +8,7 @@ import { opendir } from 'fs/promises';
 import { LoggerImpl } from './logger-impl';
 import { Logger } from '../logger';
 import { TypescriptMockServer } from '../typescript-mock-server';
+import { Interval } from '../models/config';
 
 export class TypescriptMockServerImpl implements TypescriptMockServer{
 
@@ -54,15 +55,24 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
 
   private addEndpoint(endpoint: string, httpVerb: HttpVerb, model: any) {
     this.app[httpVerb](endpoint, (req, res) => {
-      if (model?.config?.server?.statusCode) {
-        res.statusCode = model?.config?.server?.statusCode;
+      if (model?.config?.statusCode) {
+        res.statusCode = model?.config?.statusCode;
       }
-      if (model?.config?.server?.delay) {
-        setTimeout(() => res.send(model.data), model?.config?.server?.delay);
+      if (model?.config?.delay) {
+        setTimeout(() => res.send(model.data), this.getDelayValue(model?.config?.delay));
       } else {
         return res.send(model.data);
       }
     });
+  }
+
+  private getDelayValue(delay: number | Interval): number {
+    if (typeof delay === 'number') {
+      return delay;
+    } else if (delay.min && delay.max) {
+      return Math.floor(delay.min + Math.random() * delay.max);
+    }
+    return 0;
   }
 
   private handleRequest(path: string, dirent: Dirent, httpVerb: HttpVerb) {

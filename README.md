@@ -79,19 +79,20 @@ Following dependencies are being used:
 ## Roadmap
 - [x] Support other server port
 - [x] Improve paths/way to start
-- [ ] Support different headers/configurations (delays, status codes, ...)
+- [x] Support different headers/configurations (delays, status codes, ...)
 - [x] Support most used HTTP methods
 - [ ] Add tests
-- [ ] Refactor, split up in separate classes (first check if people actually want to use the tool)
+- [x] Refactor, split up in separate classes (first check if people actually want to use the tool)
 - [ ] Setup CI/CD (+code quality + coverage tooling)
 - [ ] Setup website
 - [ ] Create a JVM compatible version
-- [ ] Create interface to force implementation of required properties and make it more stable
-- [ ] Improve error handling (missing properties etc.)
+- [x] Create interface to force implementation of required properties and make it more stable
+- [x] Improve error handling (missing properties etc.)
 - [ ] Create an optional persistent state
 
 
 ## Release notes (will be moved to GitHub in the future)
+- v1.0.0 - Breaking change: renamed Server config to Request and added interval for delay
 - v0.0.11 - Add items to roadmap, bug fixes
 - v0.0.10 - Support multiple http verbs
 

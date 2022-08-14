@@ -1,4 +1,4 @@
-import { Config } from '../../src/models/config';
+import { RequestConfig } from '../../src/models/config';
 
 export interface User {
     id: number;
@@ -21,9 +21,7 @@ export const data: User[] = [{
     creationDate:  newDate()
 }];
 
-export const config: Config = {
-    server: {
-        delay: 2000,
-        statusCode: 418
-    }
+export const config: RequestConfig = {
+    delay: 2000,
+    statusCode: 418
 }
