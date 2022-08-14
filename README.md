@@ -59,11 +59,9 @@ export const data: User[] = [{
     creationDate:  newDate()
 }];
 
-export const config: Config = {
-    server: {
-        delay: 2000,
-        statusCode: 418
-    }
+export const config: RequestConfig = {
+    delay: 2000, // or you can use an interval like {min: 2000, max: 5000}
+    statusCode: 418
 }
 ```
 
@@ -92,6 +90,7 @@ Following dependencies are being used:
 
 
 ## Release notes (will be moved to GitHub in the future)
+- v1.0.3 - Updated README to include delay interval example
 - v1.0.2 - Use correct command to push tags
 - v1.0.1 - Include correct files in GIT tag
 - v1.0.0 - Breaking change: renamed Server config to Request and added interval for delay
