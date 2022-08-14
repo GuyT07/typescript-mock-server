@@ -92,6 +92,7 @@ Following dependencies are being used:
 
 
 ## Release notes (will be moved to GitHub in the future)
+- v1.0.2 - Use correct command to push tags
 - v1.0.1 - Include correct files in GIT tag
 - v1.0.0 - Breaking change: renamed Server config to Request and added interval for delay
 - v0.0.11 - Add items to roadmap, bug fixes

@@ -1,6 +1,6 @@
 {
   "name": "typescript-mock-server",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple mock server that can be used in front end development. Instead of creating json files you can just publish TypeScript objects as json",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -8,7 +8,7 @@
     "start": "ts-node-dev src/index.ts",
     "update-deps": "npm update",
     "get-version": "echo $npm_package_version",
-    "publish-to-npm": "git tag -a ${npm_package_version} -m \"v${npm_package_version}\" && git push && npm publish"
+    "publish-to-npm": "git tag -a ${npm_package_version} -m \"v${npm_package_version}\" && git push origin ${npm_package_version} && npm publish"
   },
   "repository": {
     "type": "git",
