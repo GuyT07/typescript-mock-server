@@ -5,5 +5,6 @@ export interface CommandLine {
 
 export enum Command {
   PATH = 'path',
-  PORT = 'port'
+  PORT = 'port',
+  CORS = 'cors'
 }

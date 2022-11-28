@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+import cors, { CorsOptions } from 'cors';
 import { CommandLineImpl } from './command-line-impl';
 import { Command, CommandLine } from '../command-line';
 import { RegisteredEndpoint } from '../models/registered-endpoint';
@@ -31,6 +32,11 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
     this.log.info(`basePath: ${this.basePath}`);
     this.readRoutes(this.basePath).catch(error => this.log.error(error));
     const port = this.commandLine.getCommand(Command.PORT) || 3000;
+    const corsSetting: CorsOptions = {
+      origin: this.commandLine.getCommand(Command.CORS) || '*'
+    };
+
+    this.app.use(cors(corsSetting))
     this.app.listen(port, () => {
       this.log.info(`App is listening on port ${port}!`);
     });

@@ -5,7 +5,7 @@ have to update your mock, otherwise you will receive compile errors.
 
 # Quickstart
 The easiest way to check out this stub/mock server is by installing it as a (dev)dependency and then 
-add a script to you scripts section: `npm run --prefix node_modules/typescript-mock-server start -- --path=/tms-models`. 
+add a script to you scripts section: `npm run --prefix node_modules/typescript-mock-server start -- --path=$INIT_CWD/tms-models`. 
 Your models should export a data const and your file should be named as `^(get|post){1}(-\d)?.ts$`. 
 Changes are being picked up automatically, so no need for a restart. When you add files, you have to restart.
 
@@ -14,6 +14,7 @@ Check out the [working example project](https://github.com/GuyT07/typescript-moc
 # Options
 - `--port=x`: Port number the server runs on
 - `--path=x`: Path to your models
+- `--cors=http://localhost:5000`: Set Access-Control-Allow-Origin header, leave empty to accept all
 
 ## Register mocks/stubs
 Examples talk, so lets start with an example.
@@ -90,6 +91,7 @@ Following dependencies are being used:
 
 
 ## Release notes (will be moved to GitHub in the future)
+- v1.0.5 - Set $INIT_CWD to support all platforms and enable CORS
 - v1.0.3 - Updated README to include delay interval example
 - v1.0.2 - Use correct command to push tags
 - v1.0.1 - Include correct files in GIT tag
