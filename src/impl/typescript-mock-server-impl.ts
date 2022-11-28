@@ -100,6 +100,6 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
       this.log.warn(`Path parameter not set, fallback to default tms-models`);
       return 'tms-models';
     }
-    return `${process.cwd()}/${this.commandLine.getCommand(Command.PATH)}`;
+    return this.commandLine.getCommand(Command.PATH)!!;
   }
 }
