@@ -91,7 +91,7 @@ Following dependencies are being used:
 
 
 ## Release notes (will be moved to GitHub in the future)
-- v1.0.5 - Set $INIT_CWD to support all platforms and enable CORS
+- v1.0.5 - Set $INIT_CWD to support all platforms and add CORS option
 - v1.0.3 - Updated README to include delay interval example
 - v1.0.2 - Use correct command to push tags
 - v1.0.1 - Include correct files in GIT tag
