@@ -52,6 +52,7 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
       }
     }
     this.registeredEndpoints.forEach(endpoint => this.log.info(`${endpoint.httpVerb.toUpperCase()}   http://localhost:${this.commandLine.getCommand(Command.PORT)}${endpoint.endpoint}`));
+    this.registeredEndpoints = [];
   }
 
   private handleFile(path: string, dirent: Dirent) {
@@ -93,8 +94,12 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
   private convertFileNameToEndpoint(path: string, dirent: Dirent, httpVerb: HttpVerb): string {
     const endpoint = `${path.replace(this.basePath, '')}/${dirent.name}`
       .replace('.ts', '')
-      .replace(httpVerb, '')
-      .replace('-', '');
+      .replace(httpVerb, '');
+
+    if (!endpoint.endsWith('/')) {
+      return endpoint.replace('-', '');
+    }
+
     if (endpoint.endsWith('/')) {
       return endpoint.substring(0, endpoint.length - 1);
     }
