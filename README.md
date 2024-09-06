@@ -91,6 +91,8 @@ Following dependencies are being used:
 
 
 ## Release notes (will be moved to GitHub in the future)
+- v1.0.8 - Minor bugfixes
+- v1.0.7 - Minor bugfixes
 - v1.0.6 - Bugfix: accidentally included "npm" and "install" dependency, removed again
 - v1.0.5 - Set $INIT_CWD to support all platforms and add CORS option
 - v1.0.3 - Updated README to include delay interval example

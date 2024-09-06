@@ -1,6 +1,6 @@
 {
   "name": "typescript-mock-server",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Simple mock server that can be used in front end development. Instead of creating json files you can just publish TypeScript objects as json",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
