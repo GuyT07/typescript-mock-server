@@ -1,3 +1,3 @@
 export interface TypescriptMockServer {
-  start(): void;
+  start(): Promise<void>;
 }

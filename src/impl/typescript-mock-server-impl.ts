@@ -28,9 +28,9 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
     return await import(moduleName);
   }
 
-  public start() {
+  public async start() {
     this.log.info(`basePath: ${this.basePath}`);
-    this.readRoutes(this.basePath).catch(error => this.log.error(error));
+    await this.readRoutes(this.basePath).catch(error => this.log.error(error));
     const port = this.commandLine.getCommand(Command.PORT) || 3000;
     const corsSetting: CorsOptions = {
       origin: this.commandLine.getCommand(Command.CORS) || '*'
@@ -40,6 +40,10 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
     this.app.listen(port, () => {
       this.log.info(`App is listening on port ${port}!`);
     });
+
+    // add started endpoint
+    this.addEndpoint('state', 'get', { data: "{\"status\": \"started\"}" });
+    this.log.info(`Started mock server on port ${this.commandLine.getCommand(Command.PORT)}`);
   }
 
   private async readRoutes(path: string) {
