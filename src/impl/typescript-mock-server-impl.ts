@@ -30,13 +30,13 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
 
   public async start() {
     this.log.info(`basePath: ${this.basePath}`);
-    await this.readRoutes(this.basePath).catch(error => this.log.error(error));
     const port = this.commandLine.getCommand(Command.PORT) || 3000;
     const corsSetting: CorsOptions = {
       origin: this.commandLine.getCommand(Command.CORS) || '*'
     };
 
     this.app.use(cors(corsSetting))
+    await this.readRoutes(this.basePath).catch(error => this.log.error(error));
     this.app.listen(port, () => {
       this.log.info(`App is listening on port ${port}!`);
     });
