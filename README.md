@@ -4,10 +4,37 @@ This makes it easier to maintain your mocks because you can load your own models
 have to update your mock, otherwise you will receive compile errors.
 
 # Quickstart
-The easiest way to check out this stub/mock server is by installing it as a (dev)dependency and then 
-add a script to you scripts section: `npm run --prefix node_modules/typescript-mock-server start -- --path=$INIT_CWD/tms-models`. 
-Your models should export a data const (or a function receiving `req` and `res`) and your file should be named as `^(get|post){1}(-\d)?.ts$`. 
-Changes are being picked up automatically, so no need for a restart. When you add files, you have to restart.
+The easiest way to use this tool is by installing it globally:
+
+```bash
+npm install -g typescript-mock-server
+```
+
+Then you can run it from anywhere using:
+
+```bash
+typescript-mock-server --path=./tms-models
+```
+
+Alternatively, you can install it as a (dev)dependency:
+
+```bash
+npm install --save-dev typescript-mock-server
+```
+
+And add a script to your `package.json`:
+
+```json
+"scripts": {
+  "mock": "typescript-mock-server --path=tms-models"
+}
+```
+
+Or run it directly using `npx`:
+
+```bash
+npx typescript-mock-server --path=tms-models
+```
 
 Check out the [working example project](https://github.com/GuyT07/typescript-mock-server-examle) and [the source](https://github.com/GuyT07/typescript-mock-server/tree/main/tms-models/users).
 
@@ -99,6 +126,7 @@ Following dependencies are being used:
 
 
 ## Release notes (will be moved to GitHub in the future)
+- v1.11.5 - Ensured binary has executable permissions and updated README with better Quickstart instructions.
 - v1.11.4 - Fixed "models not found" error when running as a dependency by removing incorrect path mapping for compiled models and relying on ts-node for raw TypeScript files.
 - v1.11.3 - Fixed module resolution when used as a dependency by explicitly adding ts-node as a dependency and improving its configuration at runtime.
 - v1.11.1 - Added binary support to the package, allowing it to be executed as a command-line tool when installed as a dependency.
