@@ -35,6 +35,7 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
     if (moduleName.endsWith('.ts')) {
       require('ts-node').register({
         transpileOnly: true,
+        skipProject: true,
         compilerOptions: {
           module: 'commonjs',
           allowJs: true,
