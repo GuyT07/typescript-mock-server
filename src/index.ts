@@ -1,4 +1,4 @@
-#!./node_modules/.bin/ts-node
+#!/usr/bin/env node
 
 import { TypescriptMockServer } from './typescript-mock-server';
 import { TypescriptMockServerImpl } from './impl/typescript-mock-server-impl';
