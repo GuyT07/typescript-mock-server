@@ -1,6 +1,6 @@
 {
   "name": "typescript-mock-server",
-  "version": "1.11.2",
+  "version": "1.11.4",
   "description": "Simple mock server that can be used in front end development. Instead of creating json files you can just publish TypeScript objects as json",
   "main": "dist/src/index.js",
   "bin": {
@@ -43,6 +43,7 @@
     "@types/node": "^24.10.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "ts-node": "^10.9.2",
     "tslog": "^3.3.3",
     "typescript": "^5.9.3",
     "ts-node-dev": "2.0.0"

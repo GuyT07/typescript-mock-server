@@ -99,6 +99,9 @@ Following dependencies are being used:
 
 
 ## Release notes (will be moved to GitHub in the future)
+- v1.11.4 - Fixed "models not found" error when running as a dependency by removing incorrect path mapping for compiled models and relying on ts-node for raw TypeScript files.
+- v1.11.3 - Fixed module resolution when used as a dependency by explicitly adding ts-node as a dependency and improving its configuration at runtime.
+- v1.11.1 - Added binary support to the package, allowing it to be executed as a command-line tool when installed as a dependency.
 - v1.11.0 - Support dynamic responses via request/response context, added comprehensive tests, and switched to a faster build-and-serve workflow
 - v1.10.0 - Improved path resolution and library usage support
 - v1.0.8 - Minor bugfixes

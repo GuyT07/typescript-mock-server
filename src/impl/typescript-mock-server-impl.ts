@@ -33,7 +33,15 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
 
   private static async loadModule(moduleName: string) {
     if (moduleName.endsWith('.ts')) {
-      require('ts-node').register({ transpileOnly: true });
+      require('ts-node').register({
+        transpileOnly: true,
+        compilerOptions: {
+          module: 'commonjs',
+          allowJs: true,
+          esModuleInterop: true,
+          resolveJsonModule: true
+        }
+      });
     }
     return await import(moduleName);
   }
@@ -112,18 +120,6 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
     const endpoint = this.convertFileNameToEndpoint(dirPath, dirent, httpVerb);
     let modulePath = `${dirPath}/${dirent.name}`;
     this.registeredEndpoints.push({ httpVerb, endpoint });
-
-    if (__filename.endsWith('.js') && modulePath.endsWith('.ts')) {
-      const distPath = path.join(process.cwd(), 'dist');
-      const potentialJsPath = modulePath
-        .replace(process.cwd(), distPath)
-        .replace(/\.ts$/, '.js');
-
-      const fs = require('fs');
-      if (fs.existsSync(potentialJsPath)) {
-        modulePath = potentialJsPath;
-      }
-    }
 
     await TypescriptMockServerImpl.loadModule(modulePath)
       .then(model => this.addEndpoint(endpoint, httpVerb, model))
