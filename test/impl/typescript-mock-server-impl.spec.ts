@@ -146,4 +146,36 @@ describe('TypescriptMockServerImpl', () => {
     // @ts-ignore
     expect(server.basePath).toBe(path.join(process.cwd(), customDefault));
   });
+
+  it('should support dynamic data as a function receiving req and res', async () => {
+    const mockFiles = [
+      { name: 'get-dynamic.ts', isDirectory: () => false }
+    ];
+
+    (fsPromises.opendir as jest.Mock).mockResolvedValue(async function* () {
+      yield mockFiles[0];
+    }());
+
+    const loadModuleSpy = jest.spyOn(TypescriptMockServerImpl as any, 'loadModule');
+    loadModuleSpy.mockImplementation(async () => {
+      return {
+        data: (req: any, res: any) => {
+          return {
+            query: req.query.q,
+            method: req.method
+          };
+        }
+      };
+    });
+
+    server = new TypescriptMockServerImpl(app);
+    await server.start();
+
+    const response = await request(app).get('/dynamic?q=test');
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      query: 'test',
+      method: 'GET'
+    });
+  });
 });

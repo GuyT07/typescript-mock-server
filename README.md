@@ -6,7 +6,7 @@ have to update your mock, otherwise you will receive compile errors.
 # Quickstart
 The easiest way to check out this stub/mock server is by installing it as a (dev)dependency and then 
 add a script to you scripts section: `npm run --prefix node_modules/typescript-mock-server start -- --path=$INIT_CWD/tms-models`. 
-Your models should export a data const and your file should be named as `^(get|post){1}(-\d)?.ts$`. 
+Your models should export a data const (or a function receiving `req` and `res`) and your file should be named as `^(get|post){1}(-\d)?.ts$`. 
 Changes are being picked up automatically, so no need for a restart. When you add files, you have to restart.
 
 Check out the [working example project](https://github.com/GuyT07/typescript-mock-server-examle) and [the source](https://github.com/GuyT07/typescript-mock-server/tree/main/tms-models/users).
@@ -38,7 +38,7 @@ You should have the following structure:
 
 Within the model file you can import/create your model:
 
-```
+```typescript
 export interface User {
     id: number;
     firstName: string;
@@ -48,6 +48,7 @@ export interface User {
 
 const newDate = () => new Date();
 
+// You can export a static object
 export const data: User[] = [{
     id: 1,
     firstName: 'Guy',
@@ -59,6 +60,12 @@ export const data: User[] = [{
     lastName: 'Development',
     creationDate:  newDate()
 }];
+
+// OR you can export a function to access request/response context
+export const data = (req: Request, res: Response): User[] => {
+   console.log(req.query);
+   return [{ id: 1, firstName: 'Dynamic', lastName: 'User', creationDate: new Date() }];
+}
 
 export const config: RequestConfig = {
     delay: 2000, // or you can use an interval like {min: 2000, max: 5000}
@@ -80,17 +87,20 @@ Following dependencies are being used:
 - [x] Improve paths/way to start
 - [x] Support different headers/configurations (delays, status codes, ...)
 - [x] Support most used HTTP methods
-- [ ] Add tests
+- [x] Add tests
 - [x] Refactor, split up in separate classes (first check if people actually want to use the tool)
 - [ ] Setup CI/CD (+code quality + coverage tooling)
 - [ ] Setup website
 - [ ] Create a JVM compatible version
 - [x] Create interface to force implementation of required properties and make it more stable
 - [x] Improve error handling (missing properties etc.)
+- [x] Support dynamic responses via request/response context
 - [ ] Create an optional persistent state
 
 
 ## Release notes (will be moved to GitHub in the future)
+- v1.11.0 - Support dynamic responses via request/response context, added comprehensive tests, and switched to a faster build-and-serve workflow
+- v1.10.0 - Improved path resolution and library usage support
 - v1.0.8 - Minor bugfixes
 - v1.0.7 - Minor bugfixes
 - v1.0.6 - Bugfix: accidentally included "npm" and "install" dependency, removed again

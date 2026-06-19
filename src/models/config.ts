@@ -7,6 +7,11 @@ export interface RequestConfig {
   statusCode?: number; // Status code of response
 }
 
+export interface MockModel {
+  data: any | ((req: any, res: any) => any);
+  config?: RequestConfig;
+}
+
 export interface Interval {
   min: number; // Minimum boundary, including the value
   max: number; // Maximum boundary, including the value

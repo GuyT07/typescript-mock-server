@@ -1,6 +1,6 @@
 {
   "name": "typescript-mock-server",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "Simple mock server that can be used in front end development. Instead of creating json files you can just publish TypeScript objects as json",
   "scripts": {
     "test": "jest",

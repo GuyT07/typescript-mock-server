@@ -9,7 +9,7 @@ import { opendir } from 'fs/promises';
 import { LoggerImpl } from './logger-impl';
 import { Logger } from '../logger';
 import { TypescriptMockServer } from '../typescript-mock-server';
-import { Interval, ServerConfig } from '../models/config';
+import { Interval, MockModel, ServerConfig } from '../models/config';
 import path from 'path';
 
 export class TypescriptMockServerImpl implements TypescriptMockServer{
@@ -32,6 +32,9 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
   }
 
   private static async loadModule(moduleName: string) {
+    if (moduleName.endsWith('.ts')) {
+      require('ts-node').register({ transpileOnly: true });
+    }
     return await import(moduleName);
   }
 
@@ -73,16 +76,25 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
     await this.handleRequest(dirPath, dirent, httpVerb);
   }
 
-  private addEndpoint(endpoint: string, httpVerb: HttpVerb, model: any) {
+  private addEndpoint(endpoint: string, httpVerb: HttpVerb, model: MockModel) {
     const route = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-    this.app[httpVerb](route, (req, res) => {
-      if (model?.config?.statusCode) {
-        res.statusCode = model?.config?.statusCode;
+    this.app[httpVerb](route, (req: any, res: any) => {
+      let responseData = model.data;
+      let statusCode = model?.config?.statusCode;
+      let delay = model?.config?.delay;
+
+      if (typeof model.data === 'function') {
+        responseData = model.data(req, res);
       }
-      if (model?.config?.delay) {
-        setTimeout(() => res.send(model.data), this.getDelayValue(model?.config?.delay));
+
+      if (statusCode) {
+        res.statusCode = statusCode;
+      }
+
+      if (delay) {
+        setTimeout(() => res.send(responseData), this.getDelayValue(delay));
       } else {
-        return res.send(model.data);
+        return res.send(responseData);
       }
     });
   }
@@ -101,13 +113,15 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
     let modulePath = `${dirPath}/${dirent.name}`;
     this.registeredEndpoints.push({ httpVerb, endpoint });
 
-    if (__filename.endsWith('.js')) {
+    if (__filename.endsWith('.js') && modulePath.endsWith('.ts')) {
       const distPath = path.join(process.cwd(), 'dist');
-      if (modulePath.startsWith(process.cwd()) && !modulePath.startsWith(distPath)) {
-        modulePath = modulePath.replace(process.cwd(), distPath);
-      }
-      if (modulePath.endsWith('.ts')) {
-        modulePath = modulePath.replace(/\.ts$/, '.js');
+      const potentialJsPath = modulePath
+        .replace(process.cwd(), distPath)
+        .replace(/\.ts$/, '.js');
+
+      const fs = require('fs');
+      if (fs.existsSync(potentialJsPath)) {
+        modulePath = potentialJsPath;
       }
     }
 
