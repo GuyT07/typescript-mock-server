@@ -3,9 +3,10 @@
   "version": "1.10.0",
   "description": "Simple mock server that can be used in front end development. Instead of creating json files you can just publish TypeScript objects as json",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "example": "ts-node-dev src/index.ts --path=$INIT_CWD/tms-models --port=5200 --cors=http://localhost:5200",
-    "start": "ts-node-dev src/index.ts",
+    "test": "jest",
+    "build": "tsc --outDir dist",
+    "example": "npm run build && node dist/src/index.js --path=tms-models --port=5200 --cors=http://localhost:5200",
+    "start": "npm run build && node dist/src/index.js",
     "update-deps": "npm update",
     "get-version": "echo $npm_package_version",
     "publish-to-npm": "git tag -a ${npm_package_version} -m \"v${npm_package_version}\" && git push origin ${npm_package_version} && npm publish"

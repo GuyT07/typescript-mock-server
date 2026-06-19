@@ -11,3 +11,8 @@ export interface Interval {
   min: number; // Minimum boundary, including the value
   max: number; // Maximum boundary, including the value
 }
+
+export interface ServerConfig {
+  app?: any; // Express app instance
+  path?: string; // Path to models folder
+}

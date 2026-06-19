@@ -9,7 +9,8 @@ import { opendir } from 'fs/promises';
 import { LoggerImpl } from './logger-impl';
 import { Logger } from '../logger';
 import { TypescriptMockServer } from '../typescript-mock-server';
-import { Interval } from '../models/config';
+import { Interval, ServerConfig } from '../models/config';
+import path from 'path';
 
 export class TypescriptMockServerImpl implements TypescriptMockServer{
 
@@ -19,9 +20,15 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
   private readonly basePath;
   private registeredEndpoints: RegisteredEndpoint[] = [];
 
-  constructor() {
-    this.app = express();
-    this.basePath = this.getPath();
+  constructor(config?: ServerConfig | Express) {
+    if (config && 'use' in (config as any)) {
+      this.app = config as Express;
+      this.basePath = this.getPath();
+    } else {
+      const serverConfig = config as ServerConfig;
+      this.app = serverConfig?.app || express();
+      this.basePath = this.getPath(serverConfig?.path);
+    }
   }
 
   private static async loadModule(moduleName: string) {
@@ -36,36 +43,39 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
     };
 
     this.app.use(cors(corsSetting))
+    // add started endpoint
+    this.addEndpoint('state', 'get', { data: { status: 'started' } });
+    
     await this.readRoutes(this.basePath).catch(error => this.log.error(error));
     this.app.listen(port, () => {
       this.log.info(`App is listening on port ${port}!`);
     });
 
-    // add started endpoint
-    this.addEndpoint('state', 'get', { data: "{\"status\": \"started\"}" });
-    this.log.info(`Started mock server on port ${this.commandLine.getCommand(Command.PORT)}`);
+    this.log.info(`Started mock server on port ${port}`);
   }
 
-  private async readRoutes(path: string) {
-    const dir = await opendir(path);
+  private async readRoutes(dirPath: string) {
+    const dir = await opendir(dirPath);
     for await (const dirent of dir) {
       if (dirent.isDirectory()) {
-        await this.readRoutes(`${path}/${dirent.name}`);
+        await this.readRoutes(`${dirPath}/${dirent.name}`);
       } else {
-        this.handleFile(path, dirent);
+        await this.handleFile(dirPath, dirent);
       }
     }
-    this.registeredEndpoints.forEach(endpoint => this.log.info(`${endpoint.httpVerb.toUpperCase()}   http://localhost:${this.commandLine.getCommand(Command.PORT)}${endpoint.endpoint}`));
+    const port = this.commandLine.getCommand(Command.PORT) || 3000;
+    this.registeredEndpoints.forEach(endpoint => this.log.info(`${endpoint.httpVerb.toUpperCase()}   http://localhost:${port}${endpoint.endpoint}`));
     this.registeredEndpoints = [];
   }
 
-  private handleFile(path: string, dirent: Dirent) {
+  private async handleFile(dirPath: string, dirent: Dirent) {
     const httpVerb = (dirent.name.indexOf('-') > -1 ? dirent.name.split('-')[0] : dirent.name.split('.')[0]) as HttpVerb;
-    this.handleRequest(path, dirent, httpVerb);
+    await this.handleRequest(dirPath, dirent, httpVerb);
   }
 
   private addEndpoint(endpoint: string, httpVerb: HttpVerb, model: any) {
-    this.app[httpVerb](endpoint, (req, res) => {
+    const route = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    this.app[httpVerb](route, (req, res) => {
       if (model?.config?.statusCode) {
         res.statusCode = model?.config?.statusCode;
       }
@@ -86,17 +96,28 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
     return 0;
   }
 
-  private handleRequest(path: string, dirent: Dirent, httpVerb: HttpVerb) {
-    const endpoint = this.convertFileNameToEndpoint(path, dirent, httpVerb);
-    const modulePath = `${path}/${dirent.name}`;
+  private async handleRequest(dirPath: string, dirent: Dirent, httpVerb: HttpVerb) {
+    const endpoint = this.convertFileNameToEndpoint(dirPath, dirent, httpVerb);
+    let modulePath = `${dirPath}/${dirent.name}`;
     this.registeredEndpoints.push({ httpVerb, endpoint });
-    TypescriptMockServerImpl.loadModule(modulePath)
+
+    if (__filename.endsWith('.js')) {
+      const distPath = path.join(process.cwd(), 'dist');
+      if (modulePath.startsWith(process.cwd()) && !modulePath.startsWith(distPath)) {
+        modulePath = modulePath.replace(process.cwd(), distPath);
+      }
+      if (modulePath.endsWith('.ts')) {
+        modulePath = modulePath.replace(/\.ts$/, '.js');
+      }
+    }
+
+    await TypescriptMockServerImpl.loadModule(modulePath)
       .then(model => this.addEndpoint(endpoint, httpVerb, model))
       .catch(error => this.log.error(error));
   }
 
-  private convertFileNameToEndpoint(path: string, dirent: Dirent, httpVerb: HttpVerb): string {
-    const endpoint = `${path.replace(this.basePath, '')}/${dirent.name}`
+  private convertFileNameToEndpoint(dirPath: string, dirent: Dirent, httpVerb: HttpVerb): string {
+    const endpoint = `${dirPath.replace(this.basePath, '')}/${dirent.name}`
       .replace('.ts', '')
       .replace(`${httpVerb}-`, '')
       .replace(httpVerb, '');
@@ -107,11 +128,17 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
     return endpoint;
   }
 
-  private getPath(): string {
+  private getPath(defaultPath: string = 'tms-models'): string {
+    let definedPath = defaultPath;
     if (!this.commandLine.getCommands().has(Command.PATH)) {
-      this.log.warn(`Path parameter not set, fallback to default tms-models`);
-      return 'tms-models';
+      this.log.warn(`Path parameter not set, fallback to default ${defaultPath}`);
+    } else {
+      definedPath = this.commandLine.getCommand(Command.PATH)!!;
     }
-    return this.commandLine.getCommand(Command.PATH)!!;
+
+    if (path.isAbsolute(definedPath)) {
+      return definedPath;
+    }
+    return path.join(process.cwd(), definedPath);
   }
 }
