@@ -1,17 +1,20 @@
 {
   "name": "typescript-mock-server",
-  "version": "1.11.5",
+  "version": "1.11.12",
   "description": "Simple mock server that can be used in front end development. Instead of creating json files you can just publish TypeScript objects as json",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "bin": {
-    "typescript-mock-server": "dist/src/index.js"
+    "typescript-mock-server": "dist/index.js"
   },
   "scripts": {
     "prepare": "npm run build",
     "test": "jest",
-    "build": "tsc --outDir dist && sed -i '' '1s|.*|#!/usr/bin/env node|' dist/src/index.js && chmod +x dist/src/index.js",
-    "example": "npm run build && node dist/src/index.js --path=tms-models --port=5200 --cors=http://localhost:5200",
-    "start": "npm run build && node dist/src/index.js",
+    "dev": "ts-node -P tsconfig.build.json src/index.ts",
+    "dev:watch": "ts-node-dev --respawn -P tsconfig.build.json src/index.ts",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && sed -i '' '1s|.*|#!/usr/bin/env node|' dist/index.js && chmod +x dist/index.js",
+    "example": "npm run build && node dist/index.js --path=tms-models --port=5200 --cors=http://localhost:5200",
+    "example:ts": "ts-node -P tsconfig.build.json src/index.ts --path=tms-models --port=5200 --cors=http://localhost:5200",
+    "start": "npm run build && node dist/index.js",
     "update-deps": "npm update",
     "get-version": "echo $npm_package_version",
     "publish-to-npm": "git tag -a ${npm_package_version} -m \"v${npm_package_version}\" && git push origin ${npm_package_version} && npm publish"
@@ -37,17 +40,23 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
-    "prettier": "^3.6.2"
+    "@types/jest": "^30.0.0",
+    "@types/supertest": "^7.2.1",
+    "jest": "^30.5.2",
+    "prettier": "^3.9.9",
+    "supertest": "^7.3.1",
+    "ts-jest": "^29.4.14"
   },
   "dependencies": {
-    "@types/express": "^5.0.5",
-    "@types/node": "^24.10.1",
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.4",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "ts-node": "^10.9.2",
-    "tslog": "^3.3.3",
-    "typescript": "^5.9.3",
-    "ts-node-dev": "2.0.0"
+    "tsconfig-paths": "^4.2.0",
+    "tslog": "^3.3.4",
+    "typescript": "^6.0.3",
+    "ts-node-dev": "^2.0.0"
   },
   "prettier": {
     "arrowParens": "avoid",
@@ -64,5 +73,10 @@
     "useTabs": false,
     "printWidth": 240,
     "quoteProps": "as-needed"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "fsevents@2.3.3": true,
+    "unrs-resolver@1.12.2": true
   }
 }

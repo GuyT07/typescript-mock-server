@@ -31,18 +31,42 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
     }
   }
 
+  private static isTsNodeRegistered = false;
+
   private static async loadModule(moduleName: string) {
-    if (moduleName.endsWith('.ts')) {
-      require('ts-node').register({
-        transpileOnly: true,
-        skipProject: true,
-        compilerOptions: {
-          module: 'commonjs',
-          allowJs: true,
-          esModuleInterop: true,
-          resolveJsonModule: true
+    if (moduleName.endsWith('.ts') && !this.isTsNodeRegistered) {
+      // Check if already registered by someone else
+      const isTsRegistered = !!require.extensions['.ts'];
+
+      if (!isTsRegistered) {
+        require('ts-node').register({
+          transpileOnly: true,
+          skipProject: true,
+          compilerOptions: {
+            module: 'commonjs',
+            allowJs: true,
+            esModuleInterop: true,
+            resolveJsonModule: true,
+            moduleResolution: 'node',
+            target: 'es2017'
+          }
+        });
+      }
+
+      try {
+        const tsConfigPaths = require('tsconfig-paths');
+        const tsConfig = tsConfigPaths.loadConfig();
+        if (tsConfig.resultType === 'success') {
+          tsConfigPaths.register({
+            baseUrl: tsConfig.absoluteBaseUrl,
+            paths: tsConfig.paths
+          });
         }
-      });
+      } catch (e) {
+        // tsconfig-paths might not be available or fail to load config, ignore
+      }
+
+      this.isTsNodeRegistered = true;
     }
     return await import(moduleName);
   }

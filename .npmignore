@@ -1,0 +1,19 @@
+# Exclude source files
+src/
+test/
+tms-models/
+
+# Exclude configuration files
+tsconfig.json
+tsconfig.build.json
+jest.config.js
+.gitignore
+.npmignore
+.junie/
+.idea/
+.output.txt
+.background_output_*
+*.tgz
+
+# Include dist (it's ignored by .gitignore)
+!dist/
