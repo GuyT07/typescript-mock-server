@@ -47,7 +47,7 @@ export class TypescriptMockServerImpl implements TypescriptMockServer{
             allowJs: true,
             esModuleInterop: true,
             resolveJsonModule: true,
-            moduleResolution: 'node',
+            moduleResolution: 'bundler',
             target: 'es2017'
           }
         });
